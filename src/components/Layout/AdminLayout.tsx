@@ -106,7 +106,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               🏠 Dashboard
             </Link>
             <Link
-              href="/admin/internship"
+              href="/admin/applicants"
               className="block w-full text-left px-3 py-2 rounded hover:bg-[#17414f] transition"
             >
               🎓 Applicants
