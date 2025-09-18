@@ -1,115 +1,104 @@
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 
-// const InhouseApplication = () => {
-//   const [inhouseList, setInhouseList] = useState([]);
-
-//   useEffect(() => {
-//     axios.get("http://localhost:5001/api/inhouse")
-//       .then(res => setInhouseList(res.data))
-//       .catch(err => console.error("Error fetching inhouse students:", err));
-//   }, []);
-
-//   return (
-//     <div className="p-4">
-//       <h2 className="text-xl font-bold mb-4">🏠 Inhouse Application</h2>
-//       <table className="table-auto w-full border border-gray-300">
-//         <thead className="bg-black-200">
-//           <tr>
-//             <th className="border p-2">Name</th>
-//             <th className="border p-2">Email</th>
-//             <th className="border p-2">Phone</th>
-//             <th className="border p-2">College</th>
-//             <th className="border p-2">Department</th>
-//             <th className="border p-2">PDF</th>
-//             <th className="border p-2">From</th>
-//             <th className="border p-2">To</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {inhouseList.map((student, idx) => (
-//             <tr key={idx}>
-//               <td className="border p-2">{student.name}</td>
-//               <td className="border p-2">{student.email}</td>
-//               <td className="border p-2">{student.phone}</td>
-//               <td className="border p-2">{student.college}</td>
-//               <td className="border p-2">{student.department}</td>
-//               <td className="border p-2">{student.pdfPath ? (<a className="text-blue-600 underline" href={`http://localhost:5001/${student.pdfPath}`} target="_blank" rel="noreferrer">Download PDF</a>) : "-"}</td>
-//               <td className="border p-2">{student.fromDate}</td>
-//               <td className="border p-2">{student.toDate}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default InhouseApplication;
-
-
-
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
+// // Step 1: Define an interface for your in-house student data.
+// // This tells TypeScript what a "student" object looks like.
+// interface InhouseStudent {
+//   _id: string; // Use a unique key for the .map() function
+//   fullName: string;
+//   email: string;
+//   whatsapp: string;
+//   college: string;
+//   specialization: string;
+//   fromDate: string;
+//   toDate: string;
+//   // Add any other properties you use from the student object
+// }
 
 // const InhouseApplication = () => {
-//   const [inhouseList, setInhouseList] = useState([]);
+//   // Step 2: Tell useState that it will hold an array of InhouseStudent objects.
+//   const [inhouseList, setInhouseList] = useState<InhouseStudent[]>([]);
 
 //   useEffect(() => {
+//     // IMPORTANT: Make sure this URL is correct and your server.js is configured for it.
+//     // This should fetch from your 'inhouses' collection.
 //     axios
-//       .get("http://localhost:5001/api/inhouse")
+//       .get("http://localhost:5001/api/inhouse") // This URL should point to your in-house data
 //       .then((res) => setInhouseList(res.data))
-//       .catch((err) =>
-//         console.error("Error fetching inhouse students:", err)
-//       );
+//       .catch((err) => console.error("Error fetching inhouse students:", err));
 //   }, []);
+
+//   // Step 3: Add the 'string' type to the 'email' parameter to fix the 'any' type error.
+//   const openPdf = (email: string) => {
+//     // IMPORTANT: Make sure this URL is also correct for in-house PDFs.
+//     window.open(
+//       `http://localhost:5001/api/inhouse/email/${email}/pdf`,
+//       "_blank",
+//       "noopener,noreferrer"
+//     );
+//   };
+
+//   // Step 4: Add the 'string' type here as well.
+//   const openDoc = (email: string) => {
+//     // IMPORTANT: Make sure this URL is also correct for in-house Docs.
+//     window.open(
+//       `http://localhost:5001/api/inhouse/email/${email}/doc`,
+//       "_blank",
+//       "noopener,noreferrer"
+//     );
+//   };
 
 //   return (
 //     <div className="p-4">
-//       <h2 className="text-xl font-bold mb-4">🏠 Inhouse Application</h2>
-//       <table className="table-auto w-full border border-gray-300">
-//         <thead className="bg-black-200">
-//           <tr>
-//             <th className="border p-2">Name</th>
-//             <th className="border p-2">Email</th>
-//             <th className="border p-2">Phone</th>
-//             <th className="border p-2">College</th>
-//             <th className="border p-2">Department</th>
-//             <th className="border p-2 w-32">PDF</th>
-//             <th className="border p-2">From</th>
-//             <th className="border p-2">To</th>
+//       <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2">
+//         🏠 Inhouse Application
+//       </h2>
+
+//       <table className="table-auto w-full border-collapse border border-slate-700">
+//         <thead>
+//           <tr className="text-black">
+//             <th className="border border-slate-700 p-2 text-left">Name</th>
+//             <th className="border border-slate-700 p-2 text-left">Email</th>
+//             <th className="border border-slate-700 p-2 text-left">Phone</th>
+//             <th className="border border-slate-700 p-2 text-left">College</th>
+//             <th className="border border-slate-700 p-2 text-left">Department</th>
+//             <th className="border border-slate-700 p-2 w-56 text-center">
+//               PDF / Docs
+//             </th>
+//             <th className="border border-slate-700 p-2 text-left">From</th>
+//             <th className="border border-slate-700 p-2 text-left">To</th>
 //           </tr>
 //         </thead>
-//         <tbody>
-//           {inhouseList.map((student, idx) => (
-//             <tr key={idx}>
-//               <td className="border p-2">{student.name}</td>
-//               <td className="border p-2">{student.email}</td>
-//               <td className="border p-2">{student.phone}</td>
-//               <td className="border p-2">{student.college}</td>
-//               <td className="border p-2">{student.department}</td>
 
-//               {/* ✅ PDF button */}
-//               <td className="border p-2 text-center w-32">
-//                 {student._id ? (
+//         <tbody>
+//           {/* All the errors inside this .map() function are now fixed */}
+//           {inhouseList.map((student) => (
+//             <tr key={student._id} className="text-black">
+//               <td className="border border-slate-700 p-2">{student.fullName}</td>
+//               <td className="border border-slate-700 p-2">{student.email}</td>
+//               <td className="border border-slate-700 p-2">{student.whatsapp}</td>
+//               <td className="border border-slate-700 p-2">{student.college}</td>
+//               <td className="border border-slate-700 p-2">{student.specialization}</td>
+
+//               <td className="border border-slate-700 p-2 w-56">
+//                 <div className="flex items-center justify-center gap-2">
 //                   <button
-//                     className="bg-green-600 text-white px-3 py-1 rounded w-full"
-//                     onClick={() =>
-//                       window.open(
-//                         `http://localhost:5002/api/applications/${student._id}/pdf`,
-//                         "_blank"
-//                       )
-//                     }
+//                     className="px-3 py-1 rounded text-sm bg-blue-600 hover:bg-blue-700 text-white"
+//                     onClick={() => openPdf(student.email)}
 //                   >
 //                     View PDF
 //                   </button>
-//                 ) : (
-//                   "-"
-//                 )}
+//                   <button
+//                     className="px-3 py-1 rounded text-sm bg-green-600 hover:bg-green-700 text-white"
+//                     onClick={() => openDoc(student.email)}
+//                   >
+//                     Docs
+//                   </button>
+//                 </div>
 //               </td>
 
-//               <td className="border p-2">{student.fromDate}</td>
-//               <td className="border p-2">{student.toDate}</td>
+//               <td className="border border-slate-700 p-2">{student.fromDate}</td>
+//               <td className="border border-slate-700 p-2">{student.toDate}</td>
 //             </tr>
 //           ))}
 //         </tbody>
@@ -119,35 +108,44 @@
 // };
 
 // export default InhouseApplication;
-
 
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// Step 1: I've updated the interface to match your database model (phone, department).
+interface InhouseStudent {
+  _id: string;
+  fullName: string;
+  email: string;
+  phone: string;      // CORRECTED: Changed from 'whatsapp'
+  college: string;
+  department: string; // CORRECTED: Changed from 'specialization'
+  fromDate: string;
+  toDate: string;
+}
+
 const InhouseApplication = () => {
-  const [inhouseList, setInhouseList] = useState([]);
+  const [inhouseList, setInhouseList] = useState<InhouseStudent[]>([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/applications") // ✅ FIXED
+      .get("http://localhost:5001/api/inhouse")
       .then((res) => setInhouseList(res.data))
       .catch((err) => console.error("Error fetching inhouse students:", err));
   }, []);
 
-  // ✅ Open generated PDF by email
-  const openPdf = (email) => {
+  const openPdf = (email: string) => {
     window.open(
-      `http://localhost:5001/api/applications/email/${email}/pdf`, // ✅ FIXED
+      `http://localhost:5001/api/inhouse/email/${email}/pdf`,
       "_blank",
       "noopener,noreferrer"
     );
   };
 
-  // ✅ Open uploaded documents by email
-  const openDoc = (email) => {
+  const openDoc = (email: string) => {
     window.open(
-      `http://localhost:5001/api/applications/email/${email}/doc`, // ✅ FIXED (if you have doc route)
+      `http://localhost:5001/api/inhouse/email/${email}/doc`,
       "_blank",
       "noopener,noreferrer"
     );
@@ -176,13 +174,18 @@ const InhouseApplication = () => {
         </thead>
 
         <tbody>
-          {inhouseList.map((student, idx) => (
-            <tr key={idx} className="text-black">
+          {inhouseList.map((student) => (
+            <tr key={student._id} className="text-black">
               <td className="border border-slate-700 p-2">{student.fullName}</td>
               <td className="border border-slate-700 p-2">{student.email}</td>
-              <td className="border border-slate-700 p-2">{student.whatsapp}</td>
+
+              {/* ===== FIX #1: Changed student.whatsapp to student.phone ===== */}
+              <td className="border border-slate-700 p-2">{student.phone}</td>
+
               <td className="border border-slate-700 p-2">{student.college}</td>
-              <td className="border border-slate-700 p-2">{student.specialization}</td>
+
+              {/* ===== FIX #2: Changed student.specialization to student.department ===== */}
+              <td className="border border-slate-700 p-2">{student.department}</td>
 
               <td className="border border-slate-700 p-2 w-56">
                 <div className="flex items-center justify-center gap-2">

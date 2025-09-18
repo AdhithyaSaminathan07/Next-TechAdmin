@@ -4,7 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
-const Application = require("../models/Application");
+const Application = require("../models/Students");
 
 const router = express.Router();
 

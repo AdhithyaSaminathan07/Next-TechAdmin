@@ -217,7 +217,7 @@ function Login() {
       {/* Left Side */}
       <div className="w-1/2 flex flex-col items-center justify-center border-r border-gray-300">
         <img
-          src="/assets/images/tech-vaseegrah-logo.png"
+          src="/public/tech-v.png"
           alt="Tech Vaseegrah"
           className="w-[150px] mb-4"
         />
