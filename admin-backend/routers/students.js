@@ -40,7 +40,7 @@ router.post("/:id/confirm", async (req, res) => {
       college: applicant.college,
       department: applicant.department,
       internshipType: applicant.internshipType,
-      timePeriod: applicant.TimePeriod,
+      timePeriod: applicant.timePeriod,
       fromDate: applicant.fromDate,
       toDate: applicant.toDate,
       status: "Confirmed",
@@ -79,3 +79,4 @@ router.delete("/:id", async (req, res) => {
 
 
 module.exports = router;
+

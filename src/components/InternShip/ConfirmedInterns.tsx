@@ -226,7 +226,7 @@ const ConfirmedInterns: React.FC = () => {
         </thead>
         <tbody>
           {interns.map((student) => (
-            <tr key={student._id}> {/* Use the unique _id as the key */}
+            <tr key={student._id}> 
               <td className="border p-2">{student.name}</td>
               <td className="border p-2">{student.email}</td>
               <td className="border p-2">{student.phone}</td>

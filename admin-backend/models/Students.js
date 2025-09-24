@@ -10,7 +10,7 @@ const studentSchema = new mongoose.Schema(
     college: String,
     department: String,
     internshipType: String,
-    TimePeriod: String, // Added this field from your screenshot
+    timePeriod: String, // Added this field from your screenshot
     fromDate: String,
     toDate: String,
     timestamp: String, // Added this field from your screenshot

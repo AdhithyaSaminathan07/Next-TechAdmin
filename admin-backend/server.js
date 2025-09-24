@@ -65,12 +65,108 @@
 
 
 
-// server.js
+// // server.js
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const cors = require("cors");
+// const path = require("path");
+// require("dotenv").config();
+
+// // ===== Import Routes =====
+// const internshipRoutes = require("./routers/students");
+// const applicationRoutes = require("./routers/applications");
+// const sendFormLinkRoute = require("./routers/sendFormLink");
+// const statsRouter = require("./routers/stats");
+// const confirmedInternsRouter = require("./routers/confirmedInterns");
+
+// // ==========================================================
+// // FIX - STEP 1: Import the inhouse router from its file.
+// const inhouseRouter = require("./routers/inhouse");
+// // ==========================================================
+
+
+// const app = express();
+
+// // ===== Middleware =====
+// app.use(cors({ origin: "*" })); 
+// app.use(express.json()); 
+// app.use(express.urlencoded({ extended: true })); 
+
+// // ===== Static Files =====
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// // ===== MongoDB Connection =====
+// mongoose
+//   .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/internshipDB", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("✅ MongoDB connected"))
+//   .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+// // ===== API Routes =====
+// app.use("/api/internships", internshipRoutes);     
+// app.use("/api/applications", applicationRoutes);
+// app.use("/api/send-form-link", sendFormLinkRoute); 
+// app.use("/api/stats", statsRouter);
+// app.use("/api/confirmed-interns", confirmedInternsRouter);
+
+// // ==========================================================
+// // FIX - STEP 2: Tell Express to use the inhouseRouter when it sees the URL "/api/inhouse".
+// app.use("/api/inhouse", inhouseRouter);
+// // ==========================================================
+
+
+// // ===== Health Check =====
+// app.get("/", (req, res) => {
+//   res.json({ status: "🚀 Server is running" });
+// });
+
+// // ===== Global Error Handler =====
+// app.use((err, req, res, next) => {
+//   console.error("🔥 Server Error:", err);
+//   res.status(500).json({ error: "Internal Server Error" });
+// });
+
+// // ===== Start Server =====
+// const PORT = process.env.PORT || 5001;
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server running at http://localhost:${PORT}`);
+// });
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-require("dotenv").config();
+
+// Load variables from 'touch.env' located in the project's root directory
+require("dotenv").config();  // it will load from .env by default
+
+
+// === SAFETY CHECK ===
+const requiredEnvVars = [
+  "TWILIO_SID",
+  "TWILIO_AUTH",
+  "TWILIO_WHATSAPP",
+  "BASE_URL",
+];
+const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error(
+    `\n🔥🔥 FATAL ERROR: Missing required environment variables: ${missingVars.join(
+      ", "
+    )}`
+  );
+  console.error(
+    "Please check your 'touch.env' file. It must be in the correct format (KEY=VALUE, no quotes, no semicolons).\n"
+  );
+  process.exit(1);
+} else {
+  console.log("✅ Environment variables loaded successfully.");
+}
+// ===================================
 
 // ===== Import Routes =====
 const internshipRoutes = require("./routers/students");
@@ -78,44 +174,32 @@ const applicationRoutes = require("./routers/applications");
 const sendFormLinkRoute = require("./routers/sendFormLink");
 const statsRouter = require("./routers/stats");
 const confirmedInternsRouter = require("./routers/confirmedInterns");
-
-// ==========================================================
-// FIX - STEP 1: Import the inhouse router from its file.
 const inhouseRouter = require("./routers/inhouse");
-// ==========================================================
-
 
 const app = express();
 
 // ===== Middleware =====
-app.use(cors({ origin: "*" })); 
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true })); 
+app.use(cors({ origin: "*" }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ===== Static Files =====
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static("public")); // for QR codes
 
 // ===== MongoDB Connection =====
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/internshipDB", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/internshipDB")
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // ===== API Routes =====
-app.use("/api/internships", internshipRoutes);     
+app.use("/api/internships", internshipRoutes);
 app.use("/api/applications", applicationRoutes);
-app.use("/api/send-form-link", sendFormLinkRoute); 
+app.use("/api/send-form-link", sendFormLinkRoute);
 app.use("/api/stats", statsRouter);
 app.use("/api/confirmed-interns", confirmedInternsRouter);
-
-// ==========================================================
-// FIX - STEP 2: Tell Express to use the inhouseRouter when it sees the URL "/api/inhouse".
 app.use("/api/inhouse", inhouseRouter);
-// ==========================================================
-
 
 // ===== Health Check =====
 app.get("/", (req, res) => {

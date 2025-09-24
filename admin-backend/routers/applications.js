@@ -117,12 +117,16 @@ router.get("/email/:email", async (req, res) => {
   }
 });
 
-// ✅ Generate PDF by email
-router.get("/email/:email/pdf", async (req, res) => {
+// ✅ Generate PDF by mobile number (Final, Robust Version)
+router.get("/mobile/:phone/pdf", async (req, res) => {
   try {
-    const email = decodeURIComponent(req.params.email);
-    const appData = await Application.findOne({ email });
-    if (!appData) return res.status(404).send("Application not found");
+    const phoneNumber = decodeURIComponent(req.params.phone);
+    const appData = await Application.findOne({
+      $or: [{ whatsapp: phoneNumber }, { phone: phoneNumber }],
+    });
+    if (!appData) {
+      return res.status(404).send("Application not found");
+    }
 
     const photoHTML = `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:9pt; text-align:center; padding:4px;">
       Affix Recent Passport Size Photograph
@@ -226,7 +230,7 @@ router.get("/email/:email/pdf", async (req, res) => {
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Disposition": `inline; filename=Application_${appData.email}.pdf`,
+      "Content-Disposition": `inline; filename=Application_${appData.whatsapp}.pdf`,
     });
     res.send(pdfBuffer);
   } catch (err) {

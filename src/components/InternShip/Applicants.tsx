@@ -391,6 +391,7 @@
 
 // export default InternshipList;
 
+// src/components/Applicants.tsx
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
