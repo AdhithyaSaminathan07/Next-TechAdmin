@@ -143,29 +143,27 @@ const path = require("path");
 // Load variables from 'touch.env' located in the project's root directory
 require("dotenv").config();  // it will load from .env by default
 
-
 // === SAFETY CHECK ===
 const requiredEnvVars = [
-  "TWILIO_SID",
-  "TWILIO_AUTH",
-  "TWILIO_WHATSAPP",
-  "BASE_URL",
+  "MONGO_URI",
+  "WHATSAPP_ACCESS_TOKEN",
+  "WHATSAPP_PHONE_NUMBER_ID",
+  "WHATSAPP_API_VERSION",
 ];
 const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
 if (missingVars.length > 0) {
   console.error(
-    `\n🔥🔥 FATAL ERROR: Missing required environment variables: ${missingVars.join(
-      ", "
-    )}`
+    `\n🔥🔥 FATAL ERROR: Missing required environment variables: ${missingVars.join(", ")}`
   );
   console.error(
-    "Please check your 'touch.env' file. It must be in the correct format (KEY=VALUE, no quotes, no semicolons).\n"
+    "Please check your '.env' file. It must be in the correct format (KEY=VALUE, no quotes, no semicolons).\n"
   );
   process.exit(1);
 } else {
   console.log("✅ Environment variables loaded successfully.");
 }
+
 // ===================================
 
 // ===== Import Routes =====
