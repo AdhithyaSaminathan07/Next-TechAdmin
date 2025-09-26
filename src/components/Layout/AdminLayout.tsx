@@ -42,7 +42,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <Link href="/admin/mba-internship" className="block px-3 py-2 rounded hover:bg-[#17414f] transition">
               🎓 MBA Internship
             </Link>
-            <Link href="/admin/thol-koduppom" className="block px-3 py-2 rounded hover:bg-[#17414f] transition">
+            <Link href="/admin/tktm" className="block px-3 py-2 rounded hover:bg-[#17414f] transition">
               🤝 தோள் கொடுப்போம் தொழில் முனைந்திட
             </Link>
           </nav>
