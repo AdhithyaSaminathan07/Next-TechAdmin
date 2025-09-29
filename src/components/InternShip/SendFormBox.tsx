@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-// Define props type
 interface SendFormBoxProps {
-  defaultLink?: string; // optional string
+  defaultLink?: string;
 }
 
 const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
@@ -12,7 +11,6 @@ const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
 
   const sendLink = async () => {
     const trimmedEmail = email.trim();
-
     if (!trimmedEmail) {
       alert("Please enter an email address");
       return;
@@ -39,15 +37,13 @@ const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
         alert("⚠ Something went wrong: " + (res.data?.error || "Unknown error"));
       }
     } catch (err: unknown) {
-      // Use type guard for unknown error
       if (axios.isAxiosError(err)) {
-        console.error("❌ Send Link Axios Error:", err.response?.data || err.message);
+        console.error("❌ Axios Error:", err.response?.data || err.message);
       } else if (err instanceof Error) {
-        console.error("❌ Send Link Error:", err.message);
+        console.error("❌ Error:", err.message);
       } else {
         console.error("❌ Unknown error:", err);
       }
-
       alert("Failed to send link. Check console for details.");
     } finally {
       setLoading(false);
@@ -55,7 +51,7 @@ const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
   };
 
   return (
-    <div className="bg-[#f0fff4] shadow-md rounded-xl p-6 w-full max-w-md">
+    <div className="bg-[#f0fff4] shadow-md rounded-xl p-6 w-full max-w-md mx-auto md:mx-0">
       <label className="block text-sm font-semibold text-green-700 mb-2">
         Enter Email
       </label>
@@ -69,8 +65,10 @@ const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
       />
       <button
         onClick={sendLink}
-        className={`mt-4 w-full py-2 rounded-lg text-white font-semibold transition ${
-          loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+        className={`mt-4 w-full py-2 rounded-lg text-white font-semibold transition-colors ${
+          loading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-500 hover:bg-green-600"
         }`}
         disabled={loading}
       >

@@ -1,12 +1,9 @@
-
-// src/components/internship/Confirmedinterns.tsx
-
+// src/components/internship/ConfirmedInterns.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-// This interface now correctly reflects your database schema, including the _id
 interface Intern {
-  _id: string; // We will use MongoDB's unique _id
+  _id: string;
   name: string;
   email: string;
   phone: string;
@@ -14,117 +11,182 @@ interface Intern {
   department: string;
   fromDate: string;
   toDate: string;
-  status: "Confirmed" | "Exited" | "Pending"; // The status comes directly from the database
+  status: "Confirmed" | "Exited" | "Pending";
 }
 
 const ConfirmedInterns: React.FC = () => {
   const [interns, setInterns] = useState<Intern[]>([]);
 
-  // We create a reusable function to get the latest data from the server
   const fetchConfirmedInterns = () => {
     axios
       .get<Intern[]>("http://localhost:5001/api/confirmed-interns")
-      .then((res) => {
-        setInterns(res.data);
-      })
+      .then((res) => setInterns(res.data))
       .catch((err) => console.error("Error fetching confirmed interns:", err));
   };
 
-  // Fetch data when the component first loads
   useEffect(() => {
     fetchConfirmedInterns();
   }, []);
 
-  // --- UPDATED "ENTRY" HANDLER ---
-  // It now sends the unique _id to the backend
   const handleEntry = async (id: string) => {
     try {
       const res = await axios.post<{ message: string }>(
         "http://localhost:5001/api/confirmed-interns/entry",
-        { id } // Send the unique ID in the request body
+        { id }
       );
-      alert(res.data.message); // Show the success message from the server
-      fetchConfirmedInterns(); // IMPORTANT: Refresh the list to show the student has been moved
+      alert(res.data.message);
+      fetchConfirmedInterns();
     } catch (err: any) {
-      alert(err.response?.data?.message || "An error occurred while moving the student.");
+      alert(
+        err.response?.data?.message ||
+          "An error occurred while moving the student."
+      );
     }
   };
 
-  // --- UPDATED "EXIT" HANDLER ---
-  // It now sends the unique _id to the backend
   const handleExit = async (id: string) => {
     try {
       const res = await axios.post<{ message: string }>(
         "http://localhost:5001/api/confirmed-interns/exit",
-        { id } // Send the unique ID
+        { id }
       );
       alert(res.data.message);
-      fetchConfirmedInterns(); // IMPORTANT: Refresh the list to show the updated "Exited" status
+      fetchConfirmedInterns();
     } catch (err: any) {
-      alert(err.response?.data?.message || "An error occurred while marking as exit.");
+      alert(
+        err.response?.data?.message || "An error occurred while marking as exit."
+      );
     }
   };
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">✅ Confirmed Interns</h2>
-      <table className="table-auto w-full border border-gray-300">
-        <thead className="bg-black-100">
-          <tr>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Phone</th>
-            <th className="border p-2">College</th>
-            <th className="border p-2">Department</th>
-            <th className="border p-2">From</th>
-            <th className="border p-2">To</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">In-House Entry</th>
-          </tr>
-        </thead>
-        <tbody>
-          {interns.map((student) => (
-            <tr key={student._id}> 
-              <td className="border p-2">{student.name}</td>
-              <td className="border p-2">{student.email}</td>
-              <td className="border p-2">{student.phone}</td>
-              <td className="border p-2">{student.college}</td>
-              <td className="border p-2">{student.department}</td>
-              <td className="border p-2">{student.fromDate}</td>
-              <td className="border p-2">{student.toDate}</td>
-              <td
-                className={`border p-2 font-semibold ${
-                  student.status === "Confirmed" ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {student.status}
-              </td>
-              <td className="border p-2 text-center">
-                {/* The UI now depends on the actual status from the database */}
-                {student.status === "Confirmed" ? (
-                  <div className="flex justify-center gap-2">
-                    <button
-                      onClick={() => handleEntry(student._id)} // Pass the student's _id
-                      className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-md"
-                    >
-                      Entry
-                    </button>
-                    <button
-                      onClick={() => handleExit(student._id)} // Pass the student's _id
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-md"
-                    >
-                      Exit
-                    </button>
-                  </div>
-                ) : (
-                  // If the status is "Exited", we show that instead of buttons
-                  <span className="font-bold text-red-600">Exited</span>
-                )}
-              </td>
+      <h2 className="text-xl md:text-2xl font-bold mb-4">✅ Confirmed Interns</h2>
+
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="table-auto w-full border border-gray-300 text-sm md:text-base">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border p-2">Name</th>
+              <th className="border p-2">Email</th>
+              <th className="border p-2">Phone</th>
+              <th className="border p-2">College</th>
+              <th className="border p-2">Department</th>
+              <th className="border p-2">From</th>
+              <th className="border p-2">To</th>
+              <th className="border p-2">Status</th>
+              <th className="border p-2">In-House Entry</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {interns.map((student) => (
+              <tr key={student._id}>
+                <td className="border p-2">{student.name}</td>
+                <td className="border p-2">{student.email}</td>
+                <td className="border p-2">{student.phone}</td>
+                <td className="border p-2">{student.college}</td>
+                <td className="border p-2">{student.department}</td>
+                <td className="border p-2">{student.fromDate}</td>
+                <td className="border p-2">{student.toDate}</td>
+                <td
+                  className={`border p-2 font-semibold ${
+                    student.status === "Confirmed"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {student.status}
+                </td>
+                <td className="border p-2 text-center">
+                  {student.status === "Confirmed" ? (
+                    <div className="flex justify-center gap-2 flex-wrap">
+                      <button
+                        onClick={() => handleEntry(student._id)}
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-md"
+                      >
+                        Entry
+                      </button>
+                      <button
+                        onClick={() => handleExit(student._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-md"
+                      >
+                        Exit
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="font-bold text-red-600">Exited</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden flex flex-col gap-4">
+        {interns.length > 0 ? (
+          interns.map((student) => (
+            <div
+              key={student._id}
+              className="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold text-lg">{student.name}</h3>
+                <span
+                  className={`font-semibold ${
+                    student.status === "Confirmed"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {student.status}
+                </span>
+              </div>
+              <p className="text-sm break-words">
+                <strong>Email:</strong> {student.email}
+              </p>
+              <p className="text-sm">
+                <strong>Phone:</strong> {student.phone}
+              </p>
+              <p className="text-sm break-words">
+                <strong>College:</strong> {student.college}
+              </p>
+              <p className="text-sm">
+                <strong>Department:</strong> {student.department}
+              </p>
+              <p className="text-sm">
+                <strong>From:</strong> {student.fromDate}
+              </p>
+              <p className="text-sm">
+                <strong>To:</strong> {student.toDate}
+              </p>
+              {student.status === "Confirmed" && (
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  <button
+                    onClick={() => handleEntry(student._id)}
+                    className="flex-1 text-white bg-green-500 hover:bg-green-600 font-bold py-1 px-3 rounded"
+                  >
+                    Entry
+                  </button>
+                  <button
+                    onClick={() => handleExit(student._id)}
+                    className="flex-1 text-white bg-red-500 hover:bg-red-600 font-bold py-1 px-3 rounded"
+                  >
+                    Exit
+                  </button>
+                </div>
+              )}
+              {student.status === "Exited" && (
+                <p className="text-red-600 font-bold mt-2 text-center">Exited</p>
+              )}
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No confirmed interns found.</p>
+        )}
+      </div>
     </div>
   );
 };
