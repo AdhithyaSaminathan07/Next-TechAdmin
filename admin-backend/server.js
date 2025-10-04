@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 
+
 // Load variables from 'touch.env' located in the project's root directory
 require("dotenv").config();  // it will load from .env by default
 
@@ -65,6 +66,7 @@ app.use("/api/stats", statsRouter);
 app.use("/api/confirmed-interns", confirmedInternsRouter);
 app.use("/api/inhouse", inhouseRouter);
 app.use("/api", tktmRoutes); // <<< 2. NEW ROUTE ACTIVATED
+app.use("/qrcodes", express.static(path.join(__dirname, "qrcodes")));
 
 // ===== Health Check =====
 app.get("/", (req, res) => {
