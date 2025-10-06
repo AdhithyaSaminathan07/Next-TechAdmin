@@ -39,7 +39,8 @@ const sendFormLinkRoute = require("./routers/sendFormLink");
 const statsRouter = require("./routers/stats");
 const confirmedInternsRouter = require("./routers/confirmedInterns");
 const inhouseRouter = require("./routers/inhouse");
-const tktmRoutes = require("./routers/tktm"); // <<< 1. NEW ROUTE IMPORTED
+const tktmRoutes = require("./routers/tktm"); 
+const homecomingRoutes = require("./routers/homecoming");
 
 const app = express();
 
@@ -65,7 +66,8 @@ app.use("/api/send-form-link", sendFormLinkRoute);
 app.use("/api/stats", statsRouter);
 app.use("/api/confirmed-interns", confirmedInternsRouter);
 app.use("/api/inhouse", inhouseRouter);
-app.use("/api", tktmRoutes); // <<< 2. NEW ROUTE ACTIVATED
+app.use("/api", tktmRoutes); 
+app.use("/api/homecoming", homecomingRoutes);
 app.use("/qrcodes", express.static(path.join(__dirname, "qrcodes")));
 
 // ===== Health Check =====
