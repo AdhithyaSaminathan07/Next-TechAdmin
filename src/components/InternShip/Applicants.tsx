@@ -24,7 +24,7 @@ const InternshipList = () => {
   const handleConfirm = async (studentId: string) => {
     try {
       await axios.post(
-        `http://localhost:5001/api/internships/${studentId}/confirm`
+        `/api/internships/${studentId}/confirm`
       );
 
       setInternships((currentInternships) =>
@@ -46,7 +46,7 @@ const InternshipList = () => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:5001/api/internships/${studentId}`);
+      await axios.delete(`/api/internships/${studentId}`);
 
       setInternships((currentInternships) =>
         currentInternships.filter((intern) => intern._id !== studentId)
@@ -60,7 +60,7 @@ const InternshipList = () => {
 
   useEffect(() => {
     axios
-      .get<InternshipStudent[]>("http://localhost:5001/api/internships")
+      .get<InternshipStudent[]>("/api/internships")
       .then((res) => {
         setInternships(
           res.data.filter((student) => student.status !== "Confirmed")

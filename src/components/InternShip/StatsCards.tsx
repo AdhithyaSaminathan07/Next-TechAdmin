@@ -14,7 +14,8 @@ const StatsCard: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/stats");
+      // Using the Next.js API route
+      const res = await fetch("/api/stats");
       if (!res.ok) throw new Error("Failed to fetch stats");
       const data = await res.json();
       setStats(data);

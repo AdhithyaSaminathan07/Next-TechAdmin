@@ -21,7 +21,7 @@ const TholKoduppomPage = () => {
     const fetchSubmissions = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5001/api/tktm-submissions"
+          "/api/tktm/submissions"
         );
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
         const data: TktmSubmission[] = await response.json();
@@ -42,7 +42,7 @@ const TholKoduppomPage = () => {
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/tktm-submissions/${id}/status`,
+        `/api/tktm/submissions/${id}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

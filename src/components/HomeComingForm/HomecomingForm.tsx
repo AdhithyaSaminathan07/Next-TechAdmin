@@ -155,8 +155,7 @@ const HomeComingForm = () => {
     if (nocFile) formData.append("noc", nocFile);
 
     try {
-      // const res = await fetch("http://localhost:5001/api/applications", {
-      const res = await fetch("http://localhost:5001/api/homecoming/applications", {
+      const res = await fetch("/api/homecoming/applications", {
         method: "POST",
         body: formData,
       });

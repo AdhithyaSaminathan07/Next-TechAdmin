@@ -20,6 +20,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Unified Server Setup
+
+This project now includes a unified server that runs both the Next.js frontend and Express.js backend together:
+
+```bash
+npm run dev:unified
+```
+
+This will start both servers on the same port (3000), with API requests automatically routed to the backend.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

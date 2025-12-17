@@ -7,9 +7,9 @@ interface InhouseStudent {
   _id: string;
   fullName: string;
   email: string;
-  phone: string;
+  whatsapp: string;
   college: string;
-  department: string;
+  departments: string[];
   fromDate: string;
   toDate: string;
 }
@@ -19,15 +19,15 @@ const InhouseApplication = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/inhouse")
+      .get("/api/homecoming/applications")
       .then((res) => setInhouseList(res.data))
       .catch((err) => console.error("Error fetching inhouse students:", err));
   }, []);
 
-  const openPdf = (phone: string) => {
+  const openPdf = (whatsapp: string) => {
     window.open(
-      `http://localhost:5001/api/applications/mobile/${encodeURIComponent(
-        phone
+      `/api/applications/mobile/${encodeURIComponent(
+        whatsapp
       )}/pdf`,
       "_blank",
       "noopener,noreferrer"
@@ -36,7 +36,7 @@ const InhouseApplication = () => {
 
   const openDoc = (email: string) => {
     window.open(
-      `http://localhost:5001/api/inhouse/email/${email}/doc`,
+      `/api/inhouse/email/${email}/doc`,
       "_blank",
       "noopener,noreferrer"
     );
@@ -55,9 +55,9 @@ const InhouseApplication = () => {
             <tr className="text-black">
               <th className="border border-slate-700 p-2 text-left">Name</th>
               <th className="border border-slate-700 p-2 text-left">Email</th>
-              <th className="border border-slate-700 p-2 text-left">Phone</th>
+              <th className="border border-slate-700 p-2 text-left">WhatsApp</th>
               <th className="border border-slate-700 p-2 text-left">College</th>
-              <th className="border border-slate-700 p-2 text-left">Department</th>
+              <th className="border border-slate-700 p-2 text-left">Departments</th>
               <th className="border border-slate-700 p-2 w-56 text-center">
                 PDF / Docs
               </th>
@@ -70,14 +70,14 @@ const InhouseApplication = () => {
               <tr key={student._id} className="text-black">
                 <td className="border border-slate-700 p-2">{student.fullName}</td>
                 <td className="border border-slate-700 p-2">{student.email}</td>
-                <td className="border border-slate-700 p-2">{student.phone}</td>
+                <td className="border border-slate-700 p-2">{student.whatsapp}</td>
                 <td className="border border-slate-700 p-2">{student.college}</td>
-                <td className="border border-slate-700 p-2">{student.department}</td>
+                <td className="border border-slate-700 p-2">{student.departments ? student.departments.join(", ") : ""}</td>
                 <td className="border border-slate-700 p-2 w-56 text-center">
                   <div className="flex items-center justify-center gap-2">
                     <button
                       className="px-3 py-1 rounded text-sm bg-blue-600 hover:bg-blue-700 text-white"
-                      onClick={() => openPdf(student.phone)}
+                      onClick={() => openPdf(student.whatsapp)}
                     >
                       View PDF
                     </button>
@@ -112,13 +112,13 @@ const InhouseApplication = () => {
                 <strong>Email:</strong> {student.email}
               </p>
               <p className="text-sm">
-                <strong>Phone:</strong> {student.phone}
+                <strong>WhatsApp:</strong> {student.whatsapp}
               </p>
               <p className="text-sm break-words">
                 <strong>College:</strong> {student.college}
               </p>
               <p className="text-sm">
-                <strong>Department:</strong> {student.department}
+                <strong>Departments:</strong> {student.departments ? student.departments.join(", ") : ""}
               </p>
               <p className="text-sm">
                 <strong>From:</strong> {student.fromDate}
@@ -128,7 +128,7 @@ const InhouseApplication = () => {
               </p>
               <div className="flex gap-2 mt-2 flex-wrap">
                 <button
-                  onClick={() => openPdf(student.phone)}
+                  onClick={() => openPdf(student.whatsapp)}
                   className="flex-1 text-white bg-blue-600 hover:bg-blue-700 font-bold py-1 px-3 rounded"
                 >
                   View PDF

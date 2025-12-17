@@ -24,8 +24,9 @@ const SendFormBox: React.FC<SendFormBoxProps> = ({ defaultLink }) => {
         link: defaultLink?.trim() || "https://in-house-admission-form.vercel.app/",
       };
 
+      // Using the Next.js API route
       const res = await axios.post(
-        "http://localhost:5001/api/send-form-link",
+        "/api/send-form-link",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );

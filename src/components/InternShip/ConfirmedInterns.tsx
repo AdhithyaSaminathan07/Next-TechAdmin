@@ -19,7 +19,7 @@ const ConfirmedInterns: React.FC = () => {
 
   const fetchConfirmedInterns = () => {
     axios
-      .get<Intern[]>("http://localhost:5001/api/confirmed-interns")
+      .get<Intern[]>("/api/confirmed-interns")
       .then((res) => setInterns(res.data))
       .catch((err) => console.error("Error fetching confirmed interns:", err));
   };
@@ -31,7 +31,7 @@ const ConfirmedInterns: React.FC = () => {
   const handleEntry = async (id: string) => {
     try {
       const res = await axios.post<{ message: string }>(
-        "http://localhost:5001/api/confirmed-interns/entry",
+        "/api/confirmed-interns/entry",
         { id }
       );
       alert(res.data.message);
@@ -47,7 +47,7 @@ const ConfirmedInterns: React.FC = () => {
   const handleExit = async (id: string) => {
     try {
       const res = await axios.post<{ message: string }>(
-        "http://localhost:5001/api/confirmed-interns/exit",
+        "/api/confirmed-interns/exit",
         { id }
       );
       alert(res.data.message);

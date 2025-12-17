@@ -8,11 +8,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/mongoose": "^5.11.96",
+    "aws4": "^1.13.2",
     "axios": "^1.12.2",
+    "docx": "^9.5.1",
     "lucide-react": "^0.544.0",
+    "mongoose": "^8.19.1",
+    "multer": "^2.0.2",
     "next": "15.5.3",
+    "nodemailer": "^7.0.9",
+    "pdfkit": "^0.17.2",
+    "puppeteer": "^24.23.0",
+    "qrcode": "^1.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "twilio": "^5.10.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
